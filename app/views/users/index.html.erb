@@ -1,0 +1,29 @@
+<h1>All Users</h1>
+<table border='1'>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>User Login</th>
+    <th>Company ID</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th>Person ID</th>
+    <th>As HTML</th>
+    <th>Actions</th>
+  </tr>
+  <% @users.each do |user| %>
+    <tr>
+      <td><%= user.first_name %></td>
+      <td><%= user.last_name %></td>
+      <td><%= user.user_login %></td>
+      <td><%= user.company_id %></td>
+      <td><%= user.email %></td>
+      <td><%= user.phone %></td>
+      <td><%= user.person_id%></td>
+      <td><%= user.as_html%></td>
+      <td><%= link_to "Edit", edit_user_path(user)%> |
+        <%= link_to "Delete", user_path(user), method: :delete %> |
+        <%= link_to "Invite", invite_user_path(user) %>
+      </td>
+  <% end %>
+</table>
