@@ -1,0 +1,28 @@
+<h1>Adaptive Two Factor Authentication</h1>
+
+<%= form_tag(add_login_path) do %>
+  <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID' %>
+  <%= submit_tag "Authenticate" %>
+<% end %>
+<hr>
+
+<h1>Allow / Deny Push Notification</h1>
+<%= form_tag(add_verification_path) do %>
+  <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID' %>
+  <%= submit_tag "Authenticate" %>
+<% end %>
+
+<hr>
+<h1>Two Way SMS Authentication</h1>
+<%= form_tag(add_two_way_sms_verification_path) do %>
+  <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID' %>
+  <%= submit_tag "Authenticate" %>
+<% end %>
+<hr>
+
+<h1>TOTP Authentication</h1>
+<%= form_tag(add_totp_path) do %>
+  <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID' %>
+  <%= text_field_tag 'authentication[key]', nil, placeholder: 'OTP' %>
+  <%= submit_tag "Authenticate" %>
+<% end %>
