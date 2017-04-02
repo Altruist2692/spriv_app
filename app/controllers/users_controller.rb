@@ -13,7 +13,8 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params.merge!(User::DEFAULT_VALUES))
-    response = add_user_to_company(@user)
+    params = add_user_to_company(@user)
+    response = Spriv::User.new.add_user_to_company(params)
     if response['Info'].present?
       @user.reference_id = response['Info']
       if @user.save
@@ -30,11 +31,10 @@ class UsersController < ApplicationController
   end
 
   def edit
-
   end
 
   def update
-    response = update_company_end_user(params)
+    response = Spriv::User.new.update_company_end_user(update_company_end_user)
     if response["Result"] == "Success"
       if @user.update_attributes(user_params)
         flash[:success] = "User updated successfully"
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    response = delete_end_user_from_company
+    response = Spriv::User.new.delete_end_user_from_company(delete_end_user_from_company)
     if response["Result"] == "Success"
       if @user.destroy
         flash[:success] = "User Removed successfully"
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
   end
 
   def invite
-    response = send_invitation
+    response = Spriv::User.new.send_invitation(send_invitation)
     if response["Result"] == 'Success'
       flash[:success] = 'User invited successfully.'
     else
@@ -79,8 +79,7 @@ class UsersController < ApplicationController
   private
 
   def add_user_to_company(user)
-    uri = URI('https://m.spriv.com/wsM5.asmx/AddUserToCompany')
-    params = {
+    {
         "strUsername" => ENV['SPRIV_USERNAME'],
         "strPassword" => ENV['SPRIV_PASSWORD'],
         "strAccount" => user.user_login,
@@ -94,13 +93,11 @@ class UsersController < ApplicationController
         "nStatusID" => user.status_id,
         "nStatusTimeout" => user.status_timeout
       }
-    res = Net::HTTP.post_form(uri, params)
-    JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
+
   end
 
-  def update_company_end_user(params)
-    uri = URI('https://m.spriv.com/wsM5.asmx/UpdateCompanyEndUser')
-    params = {
+  def update_company_end_user
+    {
         "strUsername" => ENV['SPRIV_USERNAME'],
         "strPassword" => ENV['SPRIV_PASSWORD'],
         "lID" => @user.reference_id,
@@ -117,30 +114,24 @@ class UsersController < ApplicationController
         "bPaired" => true,
         "bLockedOut" => false
       }
-    res = Net::HTTP.post_form(uri, params)
-    JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
+
   end
 
   def delete_end_user_from_company
-    uri = URI('https://m.spriv.com/wsM5.asmx/DeleteEndUserFromCompany')
-    params = {
+    {
       "strUsername" => ENV['SPRIV_USERNAME'],
       "strPassword" => ENV['SPRIV_PASSWORD'],
       "lID" => @user.reference_id
     }
-    res = Net::HTTP.post_form(uri, params)
-    JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
   end
 
   def send_invitation
-    uri = URI('https://m.spriv.com/wsM5.asmx/SendInvitation')
-    params = {
+    {
       "strUsername" => ENV['SPRIV_USERNAME'],
       "strPassword" => ENV['SPRIV_PASSWORD'],
       "strEndUsers" => @user.reference_id
     }
-    res = Net::HTTP.post_form(uri, params)
-    JSON.parse(res.body) if res.is_a?(Net::HTTPSuccess)
+
   end
 
   def user_params
