@@ -1,0 +1,15 @@
+
+<% flash.each do |key, msg|  %>
+<% binding.pry%>
+<ul class="flash-mmsg">
+<% if msg.class == Array %>
+  <% msg.each do |value| %>
+
+      <li class="alert <%= 'alert-' + key%>">
+        <%= flash-mmsg %>
+      </li>
+    <%end %>
+  <% else %>
+    <li class="alert <%= 'alert-' + key%>"><%= msg %></li>
+  <% end %>
+<% end %>
