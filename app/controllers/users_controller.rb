@@ -33,7 +33,6 @@ class UsersController < ApplicationController
   end
 
   def update
-    binding.pry
     response = Spriv::Client.new.update_company_end_user(update_company_end_user)
     if response["Result"] == "Success"
       if @user.update_attributes(user_params)
