@@ -1,5 +1,3 @@
-require 'net/http'
-
 class UsersController < ApplicationController
   before_filter :assign_user, only: [:edit, :update, :destroy, :invite]
 
@@ -14,7 +12,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params.merge!(User::DEFAULT_VALUES))
     params = add_user_to_company(@user)
-    response = Spriv::User.new.add_user_to_company(params)
+
+    response = Spriv::Client.new.add_user_to_company(params)
     if response['Info'].present?
       @user.reference_id = response['Info']
       if @user.save
@@ -34,7 +33,8 @@ class UsersController < ApplicationController
   end
 
   def update
-    response = Spriv::User.new.update_company_end_user(update_company_end_user)
+    binding.pry
+    response = Spriv::Client.new.update_company_end_user(update_company_end_user)
     if response["Result"] == "Success"
       if @user.update_attributes(user_params)
         flash[:success] = "User updated successfully"
@@ -53,7 +53,7 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    response = Spriv::User.new.delete_end_user_from_company(delete_end_user_from_company)
+    response = Spriv::Client.new.delete_end_user_from_company({ "lID" => @user.reference_id })
     if response["Result"] == "Success"
       if @user.destroy
         flash[:success] = "User Removed successfully"
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
   end
 
   def invite
-    response = Spriv::User.new.send_invitation(send_invitation)
+    response = Spriv::Client.new.send_invitation({ "strEndUsers" => @user.reference_id })
     if response["Result"] == 'Success'
       flash[:success] = 'User invited successfully.'
     else
@@ -80,8 +80,6 @@ class UsersController < ApplicationController
 
   def add_user_to_company(user)
     {
-        "strUsername" => ENV['SPRIV_USERNAME'],
-        "strPassword" => ENV['SPRIV_PASSWORD'],
         "strAccount" => user.user_login,
         "nClientID" => user.company_id,
         "strFirstName" => user.first_name,
@@ -98,8 +96,6 @@ class UsersController < ApplicationController
 
   def update_company_end_user
     {
-        "strUsername" => ENV['SPRIV_USERNAME'],
-        "strPassword" => ENV['SPRIV_PASSWORD'],
         "lID" => @user.reference_id,
         "strAccount" => user_params[:user_login],
         "nClientID" => user_params[:company_id],
@@ -114,23 +110,6 @@ class UsersController < ApplicationController
         "bPaired" => true,
         "bLockedOut" => false
       }
-
-  end
-
-  def delete_end_user_from_company
-    {
-      "strUsername" => ENV['SPRIV_USERNAME'],
-      "strPassword" => ENV['SPRIV_PASSWORD'],
-      "lID" => @user.reference_id
-    }
-  end
-
-  def send_invitation
-    {
-      "strUsername" => ENV['SPRIV_USERNAME'],
-      "strPassword" => ENV['SPRIV_PASSWORD'],
-      "strEndUsers" => @user.reference_id
-    }
 
   end
 

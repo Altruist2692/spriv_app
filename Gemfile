@@ -34,6 +34,7 @@ gem 'jbuilder', '~> 2.5'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'spriv', '~> 0.1.1', require: true
 
 group :development, :test do
   gem 'pry-rails'
