@@ -1,28 +1,49 @@
-<h1>Adaptive Two Factor Authentication</h1>
-
-<%= form_tag(add_login_path) do %>
-  <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID' %>
-  <%= submit_tag "Authenticate" %>
-<% end %>
-<hr>
-
-<h1>Allow / Deny Push Notification</h1>
-<%= form_tag(add_verification_path) do %>
-  <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID' %>
-  <%= submit_tag "Authenticate" %>
-<% end %>
-
-<hr>
-<h1>Two Way SMS Authentication</h1>
-<%= form_tag(add_two_way_sms_verification_path) do %>
-  <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID' %>
-  <%= submit_tag "Authenticate" %>
-<% end %>
-<hr>
-
-<h1>TOTP Authentication</h1>
-<%= form_tag(add_totp_path) do %>
-  <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID' %>
-  <%= text_field_tag 'authentication[key]', nil, placeholder: 'OTP' %>
-  <%= submit_tag "Authenticate" %>
-<% end %>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h3>Adaptive Two Factor Authentication</h3>
+    <%= form_tag(add_login_path) do %>
+    <div class="form-group">
+      <label>Login ID</label>
+        <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID', class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= submit_tag "Authenticate", class: 'btn btn-success' %>
+      </div>
+    <% end %>
+    <hr>
+    <h3>Allow / Deny Push Notification</h3>
+    <%= form_tag(add_verification_path) do %>
+        <div class="form-group">
+          <label>Login ID</label>
+          <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID', class: 'form-control' %>
+        </div>
+        <div class="form-group">
+          <%= submit_tag "Authenticate", class: 'btn btn-success' %>
+        </div>
+    <% end %>
+    <hr>
+    <h3>Two Way SMS Authentication</h3>
+    <%= form_tag(add_two_way_sms_verification_path) do %>
+      <div class="form-group">
+        <label>Login ID</label>
+        <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID', class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <%= submit_tag "Authenticate", class: 'btn btn-success' %>
+      </div>
+    <% end %>
+    <hr>
+    <h3>TOTP Authentication</h3>
+    <%= form_tag(add_totp_path) do %>
+      <div class="form-group">
+        <label>Login ID</label>
+        <%= text_field_tag 'authentication[user_login]', nil, placeholder: 'Enter Your Login ID', class: 'form-control' %>
+      </div>
+      <div class="form-group">
+        <label>Enter OTP here</label>
+        <%= text_field_tag 'authentication[key]', nil, placeholder: 'OTP', class: 'form-control' %>
+      </div>
+      <%= submit_tag "Authenticate", class: 'btn btn-success' %>
+    <% end %>
+  </div>
+</row>

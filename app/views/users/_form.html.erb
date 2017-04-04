@@ -1,0 +1,38 @@
+<%= form_for @user do |f| %>
+  <div class="form-group">
+    <label>First Name</label>
+    <%= f.text_field :first_name, placeholder: 'First Name', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <label>Last Name</label>
+    <%= f.text_field :last_name, placeholder: 'Last Name', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <label for="exampleSelect1">User Login</label>
+    <%= f.text_field :user_login, placeholder: 'User Login', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <label for="exampleSelect2">Company ID</label>
+    <%= f.text_field :company_id, placeholder: 'Company ID', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <label for="exampleTextarea">Email</label>
+    <%= f.text_field :email, placeholder: 'Email', class: 'form-control' %>
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputFile">File input</label>
+    <%= f.text_field :phone, placeholder: 'Phone No.', class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputFile">Person ID</label>
+    <%= f.text_field :person_id, placeholder: 'Person ID', class: 'form-control' %>
+  </div>
+  <div class="form-check">
+    <label class="form-check-label">
+      <%= f.check_box :as_html %>
+      As HTML
+    </label>
+  </div>
+  <%= f.submit 'Save', class: "btn btn-primary"%>
+<% end %>

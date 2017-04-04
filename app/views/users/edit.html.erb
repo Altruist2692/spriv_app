@@ -1,12 +1,6 @@
-<h1>Edit User</h1>
-<%= form_for @user do |f| %>
-  <%= f.text_field :first_name, placeholder: 'First Name' %>
-  <%= f.text_field :last_name, placeholder: 'Last Name' %>
-  <%= f.text_field :user_login, placeholder: 'User Login' %>
-  <%= f.text_field :company_id, placeholder: 'company ID' %>
-  <%= f.text_field :email, placeholder: 'Email' %>
-  <%= f.text_field :phone, placeholder: 'Phone No.' %>
-  <%= f.text_field :person_id, placeholder: 'Person ID' %>
-  <%= f.check_box :as_html, placeholder: 'As HTML' %>
-  <%= f.submit 'Save'%>
-<% end %>
+<div class="row">
+  <div class="col-sm-8 col-sm-offset-2">
+    <h1>Edit User</h1>
+    <%= render partial: 'users/form'%>
+  </div>
+</div>
