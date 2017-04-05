@@ -27,7 +27,7 @@ class AuthenticationsController < ApplicationController
       "strService" => "Web Access",
       "nMethod" => 1,
       "bAsHTML" => false,
-      "strMessage" => 'Hello There Naiya'
+      "strMessage" => 'Hello There Dev'
     }
     response = Spriv::Client.new.add_verification(params)
     response = Spriv::Poller.new.get_decision(response['ID'])
