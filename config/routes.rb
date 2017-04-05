@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root "home#index"
+  root "users#index"
   get 'users/login' => 'authentications#login', as: :login
   get "callback_handler" => 'home#callback_handler'
   resources :users
