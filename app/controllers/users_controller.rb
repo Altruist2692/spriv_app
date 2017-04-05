@@ -16,6 +16,7 @@ class UsersController < ApplicationController
     response = Spriv::Client.new.add_user_to_company(params)
     if response['Info'].present?
       @user.reference_id = response['Info']
+      @user.as_html = true
       if @user.save
         flash.now[:success] = "User added successfully"
         redirect_to users_path
