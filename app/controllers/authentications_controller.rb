@@ -14,6 +14,7 @@ class AuthenticationsController < ApplicationController
     }
     response = Spriv::Client.new.add_login(params)
     response = Spriv::Poller.new.get_decision(response['ID'])
+    set_flash(response)
     redirect_to login_path
   end
 
@@ -30,6 +31,7 @@ class AuthenticationsController < ApplicationController
     }
     response = Spriv::Client.new.add_verification(params)
     response = Spriv::Poller.new.get_decision(response['ID'])
+    set_flash(response)
     redirect_to login_path
   end
 
@@ -46,6 +48,7 @@ class AuthenticationsController < ApplicationController
     }
     response = Spriv::Client.new.add_verification(params)
     response = Spriv::Poller.new.get_decision(response['ID'])
+    set_flash(response)
     redirect_to login_path
   end
 
@@ -60,6 +63,7 @@ class AuthenticationsController < ApplicationController
       "bAsHTML" => false
     }
     response = Spriv::Client.new.add_totp(params)
+    set_flash(response)
     redirect_to login_path
   end
 
@@ -67,5 +71,17 @@ class AuthenticationsController < ApplicationController
 
   def authentication_params
     params.require(:authentication).permit!
+  end
+
+  def set_flash(response)
+    if response['Decision'] == 1
+      flash[:success] = "Authentication Done successfully"
+    elsif response['Decision'] == 3
+      flash[:danger] = "Authentication Denied."
+    elsif response['Message'] == 'OK'
+      flash[:success] = "Authentication Done successfully"
+    else
+      flash[:danger] = "Unable to Get response from Azure"
+    end
   end
 end

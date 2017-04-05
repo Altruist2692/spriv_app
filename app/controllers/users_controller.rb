@@ -17,14 +17,14 @@ class UsersController < ApplicationController
     if response['Info'].present?
       @user.reference_id = response['Info']
       if @user.save
-        flash[:success] = "User added successfully"
+        flash.now[:success] = "User added successfully"
         redirect_to users_path
       else
-        flash[:error] = @user.errors.full_messages
+        flash.now[:danger] = @user.errors.full_messages
         render :new
       end
     else
-      flash[:error] = "Unable to create user successfully."
+      flash[:danger] = response['Message']
       render :new
     end
   end
@@ -36,14 +36,14 @@ class UsersController < ApplicationController
     response = Spriv::Client.new.update_company_end_user(update_company_end_user)
     if response["Result"] == "Success"
       if @user.update_attributes(user_params)
-        flash[:success] = "User updated successfully"
+        flash.now[:success] = "User updated successfully"
         redirect_to users_path
       else
-        flash[:error] = @user.errors.full_messages
+        flash.now[:danger] = @user.errors.full_messages
         render :edit
       end
     else
-      flash[:error] = "Unable to update user successfully."
+      flash.now[:danger] = response['Message']
       render :edit
     end
   end
@@ -55,12 +55,12 @@ class UsersController < ApplicationController
     response = Spriv::Client.new.delete_end_user_from_company({ "lID" => @user.reference_id })
     if response["Result"] == "Success"
       if @user.destroy
-        flash[:success] = "User Removed successfully"
+        flash.now[:success] = "User Removed successfully"
       else
-        flash[:error] = "Unable to Remove user"
+        flash.now[:danger] = "Unable to Remove user"
       end
     else
-      flash[:error] = "Unable to remove user from Spriv. Please try again after some time."
+      flash.now[:danger] = "Unable to remove user from Spriv. Please try again after some time."
     end
     redirect_to users_path
   end
@@ -68,9 +68,9 @@ class UsersController < ApplicationController
   def invite
     response = Spriv::Client.new.send_invitation({ "strEndUsers" => @user.reference_id })
     if response["Result"] == 'Success'
-      flash[:success] = 'User invited successfully.'
+      flash.now[:success] = 'User invited successfully.'
     else
-      flash[:error] = "Unable to invite new user. Please try again."
+      flash.now[:danger] = "Unable to invite new user. Please try again."
     end
     redirect_to users_path
   end
@@ -85,10 +85,10 @@ class UsersController < ApplicationController
         "strLastName" => user.last_name,
         "strEmail" => user.email,
         "strMobilePhone" => user.phone,
-        "bAsHTML" => user.as_html,
+        "bAsHTML" => true,
         "strPersonID" => user.person_id,
         "nStatusID" => user.status_id,
-        "nStatusTimeout" => user.status_timeout
+        "nStatusTimeout" => user.status_timeout,
       }
 
   end
@@ -102,7 +102,7 @@ class UsersController < ApplicationController
         "strLastName" => user_params[:last_name],
         "strEmail" => user_params[:email],
         "strMobilePhone" => user_params[:phone],
-        "bAsHTML" => user_params[:as_html],
+        "bAsHTML" => true,
         "strPersonID" => user_params[:person_id],
         "nStatusID" => @user.status_id,
         "nStatusTimeout" => @user.status_timeout,
