@@ -42,8 +42,21 @@
       <div class="form-group">
         <label>Enter OTP here</label>
         <%= text_field_tag 'authentication[key]', nil, placeholder: 'OTP', class: 'form-control' %>
+        <small id="emailHelp" class="form-text text-muted error hide">Invlid TOTP format. Must be 6 digits.</small>
       </div>
       <%= submit_tag "Authenticate", class: 'btn btn-success' %>
     <% end %>
   </div>
 </row>
+<script>
+  $('#authentication_key').change(function(e){
+    var otp = e.target.value;
+    if(otp.length != 6){
+      $('#emailHelp').addClass('show')
+      $('#emailHelp').removeClass('hide')
+    }else{
+      $('#emailHelp').removeClass('show')
+      $('#emailHelp').addClass('hide')
+    }
+  })
+</script>
